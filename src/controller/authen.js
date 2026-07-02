@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
             email, password, name
         });
 
-        const token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
 
         res.cookie("token", token);
 
@@ -33,7 +33,8 @@ exports.register = async (req, res) => {
             token
         });
 
-        await emailService.sendRegistrationEmail(user.email , user.name)
+        await emailService.sendRegistrationEmail(user.email , user.name);
+
     } catch (error) {
         console.error("Register error:", error);
         res.status(500).json({
@@ -68,7 +69,7 @@ exports.login = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
         res.cookie("token", token);
 
         res.status(200).json({
